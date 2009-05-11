@@ -1,18 +1,20 @@
 Summary:	FCE Ultra - Linux Nintendo Entertainment System emulator
 Summary(pl.UTF-8):	FCE Ultra - linuksowy emulator systemu Nintendo
 Name:		fceultra
-Version:	0.98.12
+Version:	2.1.0a
 Release:	1
 License:	GPL v2
 Group:		X11/Applications/Games
-Source0:	http://dl.sourceforge.net/fceultra/fceu-%{version}.src.tar.bz2
-# Source0-md5:	0fd2175b1f929e8b4d456789c4d7fc2b
+Source0:	http://dl.sourceforge.net/fceultra/fceux-%{version}.src.tar.bz2
+# Source0-md5:	d48ed087e1cd5018ca8a4c9142130948
 URL:		http://fceultra.sourceforge.net/
 BuildRequires:	OpenGL-GLU-devel
 BuildRequires:	SDL >= 1.2.0
 BuildRequires:	SDL_gfx-devel >= 1.2.0
-BuildRequires:	autoconf >= 2.59-9
-BuildRequires:	automake >= 1.6
+BuildRequires:	lua51-devel
+BuildRequires:	scons
+BuildRequires:	zenity
+Requires:	zenity
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
@@ -23,27 +25,22 @@ FCE Ultra to wieloplatformowy emulator konsoli Famicom/NES/Pegasus.
 
 %prep
 %setup -q -n fceu
+%{__sed} -i 's/lua5.1/lua51/g' SConstruct
 
 %build
-%{__aclocal}
-%{__automake}
-%{__autoconf}
-%configure \
-	--with-opengl
-
-%{__make}
-
+%scons
+ 
 %install
 rm -rf $RPM_BUILD_ROOT
+install -d $RPM_BUILD_ROOT%{_bindir}
 
-%{__make} install \
-	 DESTDIR=$RPM_BUILD_ROOT
+install bin/fceux $RPM_BUILD_ROOT%{_bindir}
 
 %clean
 rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(644,root,root,755)
-%doc AUTHORS ChangeLog TODO
+%doc AUTHORS changelog.txt TODO-PROJECT
 %doc Documentation
 %attr(755,root,root) %{_bindir}/*
