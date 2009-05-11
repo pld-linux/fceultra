@@ -42,5 +42,5 @@ rm -rf $RPM_BUILD_ROOT
 %files
 %defattr(644,root,root,755)
 %doc AUTHORS changelog.txt TODO-PROJECT
-%doc Documentation
+%doc documentation
 %attr(755,root,root) %{_bindir}/*
