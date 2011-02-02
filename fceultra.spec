@@ -14,6 +14,8 @@ URL:		http://fceultra.sourceforge.net/
 BuildRequires:	OpenGL-GLU-devel
 BuildRequires:	SDL >= 1.2.14
 BuildRequires:	SDL_gfx-devel >= 1.2.14
+BuildRequires:	gtk+2-devel
+BuildRequires:	pkgconfig
 BuildRequires:	scons
 BuildRequires:	zenity
 Requires:	zenity
