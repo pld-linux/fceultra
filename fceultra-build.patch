@@ -1,0 +1,24 @@
+--- fceu2.1.5/src/file.cpp~	2010-09-19 02:05:09.000000000 +0200
++++ fceu2.1.5/src/file.cpp	2011-08-16 12:20:00.605072049 +0200
+@@ -460,21 +460,6 @@
+ 	}
+ }
+ 
+-	#ifndef HAVE_ASPRINTF
+-	static int asprintf(char **strp, const char *fmt, ...)
+-	{
+-		va_list ap;
+-		int ret;
+-
+-		va_start(ap,fmt);
+-		if(!(*strp=(char*)FCEU_dmalloc(2048))) //mbg merge 7/17/06 cast to char*
+-			return(0);
+-		ret=vsnprintf(*strp,2048,fmt,ap);
+-		va_end(ap);
+-		return(ret);
+-	}
+-	#endif
+-
+ std::string  FCEU_GetPath(int type)
+ {
+ 	char ret[FILENAME_MAX];
