@@ -1,24 +1,22 @@
 --- fceu2.1.5/src/file.cpp~	2010-09-19 02:05:09.000000000 +0200
-+++ fceu2.1.5/src/file.cpp	2011-08-16 12:20:00.605072049 +0200
-@@ -460,21 +460,6 @@
- 	}
- }
++++ fceu2.1.5/src/file.cpp	2012-02-12 10:11:53.832509623 +0100
+@@ -310,7 +310,7 @@
+ 				if(magic==0x088b1f) {
+ 					 // maybe gzip... 
  
--	#ifndef HAVE_ASPRINTF
--	static int asprintf(char **strp, const char *fmt, ...)
--	{
--		va_list ap;
--		int ret;
--
--		va_start(ap,fmt);
--		if(!(*strp=(char*)FCEU_dmalloc(2048))) //mbg merge 7/17/06 cast to char*
--			return(0);
--		ret=vsnprintf(*strp,2048,fmt,ap);
--		va_end(ap);
--		return(ret);
--	}
--	#endif
--
- std::string  FCEU_GetPath(int type)
- {
- 	char ret[FILENAME_MAX];
+-					void* gzfile = gzopen(fileToOpen.c_str(),"rb");
++					gzFile gzfile = gzopen(fileToOpen.c_str(),"rb");
+ 					if(gzfile) {
+ 						delete fp;
+ 
+--- fceu2.1.5/SConstruct~	2011-06-04 07:26:55.000000000 +0200
++++ fceu2.1.5/SConstruct	2012-02-12 10:15:10.593425125 +0100
+@@ -39,6 +39,8 @@
+   env.Append(CCFLAGS = os.environ['CFLAGS'].split())
+ if os.environ.has_key('LDFLAGS'):
+   env.Append(LINKFLAGS = os.environ['LDFLAGS'].split())
++if os.environ.has_key('LIBS'):
++  env.Append(LIBS = os.environ['LIBS'].split())
+ 
+ print "platform: ", env['PLATFORM']
+ 
