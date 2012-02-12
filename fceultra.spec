@@ -5,7 +5,7 @@ Summary:	FCE Ultra - Linux Nintendo Entertainment System emulator
 Summary(pl.UTF-8):	FCE Ultra - linuksowy emulator systemu Nintendo
 Name:		fceultra
 Version:	2.1.5
-Release:	3
+Release:	4
 License:	GPL v2+
 Group:		X11/Applications/Games
 Source0:	http://downloads.sourceforge.net/fceultra/fceux-%{version}.src.tar.bz2
@@ -30,9 +30,15 @@ FCE Ultra to wieloplatformowy emulator konsoli Famicom/NES/Pegasus.
 
 %prep
 %setup -q -n fceu%{version}
+%undos src/file.cpp
 %patch0 -p1
 
 %build
+CC="%{__cc}" \
+CXX="%{__cxx}" \
+CFLAGS="%{rpmcflags}" \
+LDFLAGS="%{rpmldflags}" \
+LIBS="-ldl" \
 %scons
 
 %install
