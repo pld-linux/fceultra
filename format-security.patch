@@ -1,0 +1,11 @@
+--- fceux-2.2.1/src/drivers/sdl/sdl.cpp~	2013-03-02 20:46:34.000000000 +0100
++++ fceux-2.2.1/src/drivers/sdl/sdl.cpp	2013-07-14 20:06:36.493322816 +0200
+@@ -934,7 +934,7 @@
+ 	if(gtkIsStarted == true && noGui == 0)
+ 	{
+ 		GtkWidget* d;
+-		d = gtk_message_dialog_new(GTK_WINDOW(MainWindow), GTK_DIALOG_MODAL,        GTK_MESSAGE_ERROR, GTK_BUTTONS_OK, errormsg);
++		d = gtk_message_dialog_new(GTK_WINDOW(MainWindow), GTK_DIALOG_MODAL,        GTK_MESSAGE_ERROR, GTK_BUTTONS_OK, "%s", errormsg);
+ 		gtk_dialog_run(GTK_DIALOG(d));
+ 		gtk_widget_destroy(d);
+ 	}

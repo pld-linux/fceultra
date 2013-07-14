@@ -1,0 +1,13 @@
+--- fceux-2.2.1/SConstruct~	2013-03-10 22:21:52.000000000 +0100
++++ fceux-2.2.1/SConstruct	2013-07-14 20:04:15.261914050 +0200
+@@ -125,8 +125,8 @@
+       # Should work on any *nix
+       env.Append(CCFLAGS = ["-DLUA_USE_LINUX"])
+     lua_available = False
+-    if conf.CheckLib('lua5.1'):
+-      env.Append(LINKFLAGS = ["-ldl", "-llua5.1"])
++    if conf.CheckLib('lua51'):
++      env.Append(LINKFLAGS = ["-ldl", "-llua51"])
+       lua_available = True
+     elif conf.CheckLib('lua'):
+       env.Append(LINKFLAGS = ["-ldl", "-llua"])
