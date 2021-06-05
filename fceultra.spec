@@ -22,6 +22,7 @@ BuildRequires:	cmake
 BuildRequires:	lua51-devel
 BuildRequires:	minizip-devel
 BuildRequires:	pkgconfig
+Requires:	Qt5Gui-platform-xcb-glx >= 5.11
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
