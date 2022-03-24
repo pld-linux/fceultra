@@ -1,17 +1,13 @@
-#
-# TODO: bcond for non-gtk gui (gfceux)
-# TODO: bcond for gtk3 interface instead of qt
-#
 Summary:	FCE Ultra - Linux Nintendo Entertainment System emulator
 Summary(pl.UTF-8):	FCE Ultra - linuksowy emulator systemu Nintendo
 Name:		fceultra
-Version:	2.6.3
+Version:	2.6.4
 Release:	1
 License:	GPL v2+
 Group:		X11/Applications/Games
 #Source0:	http://downloads.sourceforge.net/fceultra/fceux-%{version}.src.tar.gz
 Source0:	https://sourceforge.net/projects/fceultra/files/Source%20Code/%{version}%20src/fceux-%{version}.tar.gz
-# Source0-md5:	d45dbfca4a2c398889111b93e8f7f16f
+# Source0-md5:	70d781780f2fcc73f3f5b7ceb76ad2e1
 URL:		http://fceultra.sourceforge.net/
 BuildRequires:	Mesa-libGLU-devel
 BuildRequires:	Qt5Core-devel >= 5.11
