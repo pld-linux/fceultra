@@ -1,0 +1,71 @@
+--- fceux-2.6.6/src/drivers/Qt/AviRecord.cpp.orig	2023-08-26 19:04:21.000000000 +0200
++++ fceux-2.6.6/src/drivers/Qt/AviRecord.cpp	2024-09-17 19:22:44.360288805 +0200
+@@ -388,7 +388,13 @@ namespace X265
+ {
+ static x265_param *param = NULL;
+ static x265_picture *pic = NULL;
++static x265_picture *pic_outp = NULL;
++#if X265_BUILD >= 210
++static x265_picture pic_outl[MAX_SCALABLE_LAYERS];
++static x265_picture* pic_outlp[MAX_SCALABLE_LAYERS];
++#else
+ static x265_picture pic_out;
++#endif
+ static x265_encoder *hdl = NULL;
+ static x265_nal *nal = NULL;
+ static unsigned int i_nal = 0;
+@@ -420,6 +426,12 @@ static int init( int width, int height )
+ 	param->fpsNum   = 1000000;
+ 	param->fpsDenom = usec;
+ 	
++#if X265_BUILD >= 210
++	for (int i = 0; i < MAX_SCALABLE_LAYERS; i++) pic_outlp[i] = &pic_outp[i];
++	pic_outp = pic_outlp[0];
++#else
++	pic_outp = &pic_out;
++#endif
+ 	/* Apply profile restrictions. */
+ 	//if( x265_param_apply_profile( param, "high" ) < 0 )
+ 	//{
+@@ -460,7 +472,11 @@ static int encode_frame( unsigned char *
+ 	pic->stride[1] = width/2;
+ 	pic->stride[2] = width/2;
+ 
++#if X265_BUILD >= 210
++	ret = x265_encoder_encode( hdl, &nal, &i_nal, pic, pic_outlp );
++#else
+ 	ret = x265_encoder_encode( hdl, &nal, &i_nal, pic, &pic_out );
++#endif
+ 
+ 	if ( ret <= 0 )
+ 	{
+@@ -471,7 +487,7 @@ static int encode_frame( unsigned char *
+ 		flags = 0;
+ 		totalPayload = 0;
+ 
+-		if ( IS_X265_TYPE_I(pic_out.sliceType) )
++		if ( IS_X265_TYPE_I(pic_outp->sliceType) )
+ 		{
+ 			flags |= gwavi_t::IF_KEYFRAME;
+ 		}
+@@ -493,7 +509,11 @@ static int close(void)
+ 	/* Flush delayed frames */
+ 	while( hdl != NULL )
+ 	{
++#if X265_BUILD >= 210
++	    ret = x265_encoder_encode( hdl, &nal, &i_nal, NULL, pic_outlp );
++#else
+ 	    ret = x265_encoder_encode( hdl, &nal, &i_nal, NULL, &pic_out );
++#endif
+ 
+ 	    if ( ret <= 0 )
+ 	    {
+@@ -504,7 +524,7 @@ static int close(void)
+ 		totalPayload = 0;
+ 		flags = 0;
+ 
+-		if ( IS_X265_TYPE_I(pic_out.sliceType) )
++		if ( IS_X265_TYPE_I(pic_outp->sliceType) )
+ 		{
+ 			flags |= gwavi_t::IF_KEYFRAME;
+ 		}
