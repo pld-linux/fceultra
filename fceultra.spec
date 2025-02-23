@@ -59,7 +59,7 @@ FCE Ultra to wieloplatformowy emulator konsoli Famicom/NES/Pegasus.
 
 %prep
 %setup -q -n fceux-%{version}
-%patch0 -p1
+%patch -P 0 -p1
 
 %build
 CFLAGS="%{rpmcflags}"
