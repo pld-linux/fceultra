@@ -5,7 +5,7 @@
  static x265_param *param = NULL;
  static x265_picture *pic = NULL;
 +static x265_picture *pic_outp = NULL;
-+#if X265_BUILD >= 210
++#if X265_BUILD >= 210 && X265_BUILD < 213
 +static x265_picture pic_outl[MAX_SCALABLE_LAYERS];
 +static x265_picture* pic_outlp[MAX_SCALABLE_LAYERS];
 +#else
@@ -18,7 +18,7 @@
  	param->fpsNum   = 1000000;
  	param->fpsDenom = usec;
  	
-+#if X265_BUILD >= 210
++#if X265_BUILD >= 210 && X265_BUILD < 213
 +	for (int i = 0; i < MAX_SCALABLE_LAYERS; i++) pic_outlp[i] = &pic_outp[i];
 +	pic_outp = pic_outlp[0];
 +#else
@@ -31,7 +31,7 @@
  	pic->stride[1] = width/2;
  	pic->stride[2] = width/2;
  
-+#if X265_BUILD >= 210
++#if X265_BUILD >= 210 && X265_BUILD < 213
 +	ret = x265_encoder_encode( hdl, &nal, &i_nal, pic, pic_outlp );
 +#else
  	ret = x265_encoder_encode( hdl, &nal, &i_nal, pic, &pic_out );
@@ -52,7 +52,7 @@
  	/* Flush delayed frames */
  	while( hdl != NULL )
  	{
-+#if X265_BUILD >= 210
++#if X265_BUILD >= 210 && X265_BUILD < 213
 +	    ret = x265_encoder_encode( hdl, &nal, &i_nal, NULL, pic_outlp );
 +#else
  	    ret = x265_encoder_encode( hdl, &nal, &i_nal, NULL, &pic_out );
